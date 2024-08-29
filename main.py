@@ -12,6 +12,7 @@ load_dotenv()
 
 TOKEN = os.getenv('TOKEN')
 CHANNEL_ID = os.getenv('CHANNEL_ID')
+CHANNEL_URL = os.getenv('CHANNEL_URL')
 API_URL = os.getenv('API_URL')  # URL сайта для GET/POST запросов
 
 bot = Bot(token=TOKEN)
@@ -35,7 +36,7 @@ async def start(message: types.Message):
             surname = data[1]
             phone_number = data[2]
             user_data[message.from_user.id] = phone_number  # Сохраняем номер телефона
-            await message.reply(f'Привет, {name} {surname}! Ваш номер телефона: {phone_number}\nПожалуйста, подпишись на наш канал: https://t.me/+wcVjhfctVNs3ZWZi')
+            await message.reply(f'Привет, {name} {surname}! Ваш номер телефона: {phone_number}\nПожалуйста, подпишись на наш канал: {CHANNEL_URL}')
         else:
             await message.reply('Неверный формат данных.')
     else:
