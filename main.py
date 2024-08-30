@@ -53,6 +53,14 @@ async def process_callback(callback_query: types.CallbackQuery):
         await bot.delete_message(chat_id=callback_query.message.chat.id, message_id=callback_query.message.message_id)
         if member.status != 'left':
             await bot.send_message(callback_query.from_user.id, 'Спасибо за подписку!')
+            phone_number = user_data.get(user_id)
+            if phone_number:
+                async with aiohttp.ClientSession() as session:
+                    async with session.post(API_URL, json={'phone_number': phone_number}) as response:
+                        if response.status == 200:
+                            await bot.send_message(callback_query.from_user.id, 'Ссылка на сайт отправлена успешно.')
+                        else:
+                            await bot.send_message(callback_query.from_user.id, 'Ошибка при отправке ссылки на сайт.')
         else:
             await bot.send_message(callback_query.from_user.id, 'Пожалуйста, подпишись на наш канал для продолжения.', reply_markup=buttons.subscribe_button)
     except Exception as e:
